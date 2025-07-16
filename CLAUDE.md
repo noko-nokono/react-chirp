@@ -21,59 +21,61 @@ npm run test         # Run Jest tests
 
 ### Core Design Patterns
 
-**Factory Pattern**: The main `chirp()` function in `/src/index.ts` acts as a factory, creating Logger instances with default settings (INFO level, ConsoleTransport).
+**Factory Pattern**: The main `chirp()` function in `/src/core/logger.ts` acts as a factory, creating ChirpLogger instances with default console transport.
 
-**Transport Architecture**: Implements a pluggable output system where multiple Transport implementations can be used simultaneously. Each Transport implements a simple `write(entry: LogEntry)` interface.
+**Transport Architecture**: Implements a pluggable output system where a single Transport implementation handles log output. Each Transport implements a simple `write(entry: LogEntry)` interface.
 
-**Method Overloading**: Logger methods support two call patterns:
+**Simple Method Signature**: Logger methods support a clean call pattern:
 - `logger.info("message")` - Simple string logging
-- `logger.info({userId: 123}, "message")` - Object context + message
+- `logger.info("message", { userId: "123" })` - Message + Record<string, string> data
 
-**Child Logger Pattern**: `logger.child(bindings)` creates new logger instances that inherit parent configuration while adding additional context fields to all log entries.
+**React Hook Pattern**: `useChirp()` hook provides the same logging functionality as the core chirp function but optimized for React components with useRef and useCallback.
 
 ### Key Type Relationships
 
-- `ChirpLogger` interface defines the public API
-- `LogEntry` is the standardized internal log format with level, timestamp, message, and arbitrary fields
+- `ChirpLogger` class provides the core logging functionality
+- `LogEntry` is the standardized internal log format with level, timestamp, message, and additional string fields
 - `Transport` interface abstracts output destinations
-- `ChirpOptions` configures logger behavior including browser-specific write functions
+- `ChirpConfig` configures logger behavior with optional transport setting
 
 ### React Integration Strategy
 
 The `/src/react/` directory provides React-specific abstractions:
-- All hooks work without any Provider setup, using a global logger by default
-- `useLogger` accepts optional default additional data that gets automatically included in all log entries
-- Enhanced logger methods support runtime configuration via options parameter
-- Runtime options include `name` for logger naming and full ChirpOptions for transport/level configuration
-- Configuration is passed directly to hooks rather than through Context providers
+- `useChirp` hook works without any Provider setup, creating a logger instance via useRef
+- Hook methods are optimized with useCallback for performance
+- Configuration is passed directly to the hook rather than through Context providers
 
-### Browser-Specific Features
+### Transport Configuration
 
-The Logger class includes browser-specific optimization through `ChirpOptions.browser.write` which allows custom write functions per log level, bypassing the standard Transport system for performance-critical scenarios.
+The Logger class uses a single Transport instance:
+- Default transport is ConsoleTransport for console output
+- Custom transports can be configured via the config parameter: `chirp({ transport: customTransport })`
+- Transport configuration is separate from the execution logic
 
 ### Level Filtering
 
-Numeric log levels (TRACE=10, DEBUG=20, INFO=30, WARN=40, ERROR=50, FATAL=60) enable efficient filtering. Logs below the configured level are rejected early in the `log()` method.
+Numeric log levels (TRACE=10, DEBUG=20, INFO=30, WARN=40, ERROR=50, FATAL=60) are defined but currently not used for filtering in this simplified implementation.
 
 ## Important Implementation Details
 
-### Enhanced useLogger Implementation
-The `useLogger` hook creates an enhanced logger interface that:
-- Accepts optional `defaultAdditionalData` parameter for automatic data inclusion
-- Wraps each log method to support runtime options via second parameter
-- Merges default additional data with log entries automatically
-- Supports runtime logger configuration including `name` and transport settings
+### Simplified API
+The current implementation follows the document.txt specification:
+- First argument is always a string message (required)
+- Second argument is optional Record<string, string> for additional data
+- No complex formatting or child logger functionality
 
-### Transport Array Handling
-Logger constructor normalizes transport options into arrays, supporting both single Transport and Transport[] configurations.
+### Transport Handling
+Logger constructor accepts a single Transport instance rather than arrays, simplifying the architecture.
 
-### Message Formatting
-The `formatMessage()` method implements printf-style formatting with %s, %d, %j, and %% placeholders.
+### Message Handling
+No printf-style formatting - messages are passed through as-is.
 
-### Runtime Logger Configuration
-Enhanced logger methods accept options parameter with:
-- `name`: Sets logger name for that specific log entry
-- All standard ChirpOptions: level, transport, browser settings, etc.
+### React Hook Implementation
+The `useChirp` hook:
+- Creates a logger instance via useRef for persistence
+- Wraps each log method with useCallback for performance
+- Accepts optional transport configuration
+- Returns object with all logging methods
 
 ### TypeScript Configuration
 - Compiles to ES2020 with DOM support
@@ -82,3 +84,26 @@ Enhanced logger methods accept options parameter with:
 
 ### Peer Dependencies
 React >=16.8.0 is required for hook support in the React integration layer.
+
+## Core Functions
+
+### chirp(config?)
+- Creates ChirpLogger instance
+- Accepts optional ChirpConfig with transport setting
+- Returns logger with trace, debug, info, warn, error, fatal methods
+
+### useChirp(config?)
+- React hook that provides logging functionality
+- Returns object with optimized logging methods
+- Accepts same configuration as chirp function
+
+### Logger Methods
+All methods follow signature: `methodName(msg: string, data?: Record<string, string>): void`
+
+## Important Notes for Development
+
+- Always use the simplified API specified in document.txt
+- First argument must be string message, second argument optional Record<string, string>
+- Default transport is ConsoleTransport
+- Custom transports configured via config object
+- React hook provides same functionality as core chirp function but optimized for React

@@ -1,7 +1,7 @@
 {
   "name": "react-chirp",
   "version": "0.1.0",
-  "description": "A high-performance, structured logging library for React applications",
+  "description": "A simple, structured logging library for React applications",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

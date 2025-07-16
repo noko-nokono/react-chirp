@@ -1,15 +1,14 @@
 # react-chirp
 
-A high-performance, structured logging library for React applications.
+A simple, structured logging library for React applications.
 
 ## Features
 
 - 🎯 **Level-based logging**: TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 - 🚀 **Multiple transports**: Console, LocalStorage, Network
-- ⚛️ **React integration**: Context Provider and custom hooks
-- 🎛️ **Child loggers**: Create focused loggers with bindings
-- 🌐 **Browser optimized**: Async/batch processing support
-- 📱 **TypeScript**: Full type safety
+- ⚛️ **React integration**: Custom hooks for React components
+- 📱 **TypeScript**: Full type safety with Record<string, string> data
+- 🎛️ **Configurable**: Custom transport configuration support
 
 ## Installation
 
@@ -17,202 +16,149 @@ A high-performance, structured logging library for React applications.
 npm install react-chirp
 ```
 
-## Directory Structure
-
-```
-src/
-├── core/                 # Core logging functionality
-│   ├── index.ts         # Core exports
-│   └── logger.ts        # Main Logger class implementation
-├── react/               # React-specific components and hooks
-│   ├── index.ts         # React exports
-│   └── hooks.ts         # Custom logging hooks
-├── transports/          # Output transports
-│   ├── index.ts         # Transport exports
-│   ├── console.ts       # Console transport
-│   ├── localStorage.ts  # LocalStorage transport
-│   └── network.ts       # Network transport
-├── types/               # TypeScript type definitions
-│   └── index.ts         # All type definitions
-└── index.ts             # Main library entry point
-```
-
 ## Quick Start
 
 ### Basic Usage
 
-```tsx
+```typescript
 import { chirp } from 'react-chirp';
 
+// Create a logger instance
 const logger = chirp();
-logger.info('Hello, world!');
-logger.error({ error: 'Something went wrong' }, 'Error occurred');
+
+// Basic logging with message only
+logger.trace("trace message");
+logger.debug("debug message");
+logger.info("info message");
+logger.warn("warning message");
+logger.error("error message");
+logger.fatal("fatal message");
+
+// Logging with additional data
+logger.debug("debug message", { userId: "123", action: "login" });
+logger.info("user action", { userId: "123", page: "dashboard" });
 ```
 
 ### React Integration
 
 ```tsx
-import React from 'react';
-import { useLogger, LogLevel, NetworkTransport } from 'react-chirp';
-
-function App() {
-  return <MyComponent />; // No Provider needed!
-}
+import React, { useEffect } from 'react';
+import { useChirp } from 'react-chirp';
 
 function MyComponent({ userId }: { userId: string }) {
-  // Simple logging (no additional data)
-  const logger = useLogger();
-
-  // With default additional data (automatically included in all logs)
-  const userLogger = useLogger({
-    userId,
-    component: 'MyComponent',
-    version: '1.0.0',
-  });
+  // Use the chirp hook
+  const { trace, debug, info, warn, error, fatal } = useChirp();
 
   useEffect(() => {
-    // Basic logging
-    logger.info('Component mounted');
-
-    // Logging with automatic additional data
-    userLogger.info('User action performed');
-    // Output includes: { userId: "123", component: "MyComponent", version: "1.0.0", msg: "User action performed", ... }
-
-    // Logging with custom name and options
-    userLogger.info('Critical user action', {
-      name: 'UserActionLogger',
-      level: LogLevel.WARN,
-      transport: [new NetworkTransport({ url: '/api/critical-logs' })],
-    });
+    // Log component mount
+    info("Component mounted");
+    
+    // Log with additional data
+    debug("User data loaded", { userId, timestamp: Date.now().toString() });
   }, []);
 
-  return <div>My Component</div>;
+  const handleClick = () => {
+    info("Button clicked", { userId, action: "submit" });
+  };
+
+  return <button onClick={handleClick}>Click me</button>;
 }
 ```
 
-### Alternative: Direct chirp() Usage
+### Custom Transport Configuration
 
-For cases where you want to share the same custom logger across multiple components:
+```typescript
+import { chirp, NetworkTransport } from 'react-chirp';
 
-```tsx
-import { chirp, LogLevel, NetworkTransport } from 'react-chirp';
-
-// Create a shared custom logger
-const appLogger = chirp({
-  level: LogLevel.DEBUG,
-  name: 'MyApp',
-  transport: [
-    new ConsoleTransport(),
-    new NetworkTransport({ url: '/api/logs' }),
-  ],
+// Use custom transport
+const logger = chirp({
+  transport: new NetworkTransport({ url: '/api/logs' })
 });
 
-function MyComponent() {
-  // Use the shared logger directly
-  appLogger.info('Using shared logger');
-
-  // Or pass it to hooks for child logger creation
-  const userLogger = appLogger.child({ userId: 123 });
-
-  return <div>My Component</div>;
-}
-```
-
-### Transports
-
-```tsx
-import {
-  chirp,
-  ConsoleTransport,
-  LocalStorageTransport,
-  NetworkTransport,
-} from 'react-chirp';
-
-const logger = chirp({
-  transport: [
-    new ConsoleTransport({ asObject: false }),
-    new LocalStorageTransport({
-      key: 'app-logs',
-      maxEntries: 1000,
-    }),
-    new NetworkTransport({
-      url: 'https://api.example.com/logs',
-      batchSize: 20,
-      flushInterval: 10000,
-    }),
-  ],
+// Or in React hook
+const { info } = useChirp({
+  transport: new NetworkTransport({ url: '/api/logs' })
 });
 ```
 
 ## API Reference
 
-### Log Levels
+### chirp(config?)
+
+Creates a new logger instance.
+
+**Parameters:**
+- `config?: { transport?: Transport }` - Optional configuration object
+
+**Returns:** Logger instance with methods: `trace`, `debug`, `info`, `warn`, `error`, `fatal`
+
+### useChirp(config?)
+
+React hook that provides logging functionality.
+
+**Parameters:**
+- `config?: { transport?: Transport }` - Optional configuration object
+
+**Returns:** Object with logging methods: `{ trace, debug, info, warn, error, fatal }`
+
+### Logger Methods
+
+All logger methods follow the same signature:
+
+```typescript
+methodName(msg: string, data?: Record<string, string>): void
+```
+
+**Parameters:**
+- `msg: string` - The log message (required)
+- `data?: Record<string, string>` - Additional key-value pairs to include in the log entry (optional)
+
+## Log Levels
 
 - `TRACE = 10` - Detailed trace information
-- `DEBUG = 20` - Debug information
+- `DEBUG = 20` - Debug information  
 - `INFO = 30` - General information
 - `WARN = 40` - Warning messages
 - `ERROR = 50` - Error conditions
 - `FATAL = 60` - Critical failures
 
-### useLogger Hook
+## Transports
 
-```tsx
-const logger = useLogger(defaultAdditionalData?: Record<string, any>)
+### ConsoleTransport (Default)
+
+Outputs logs to the browser console.
+
+```typescript
+import { ConsoleTransport } from 'react-chirp';
+
+const transport = new ConsoleTransport({ asObject: false });
 ```
 
-**Parameters:**
+### LocalStorageTransport
 
-- `defaultAdditionalData` - Object that will be automatically included in all log entries
+Stores logs in browser local storage.
 
-**Returns:** Enhanced logger with additional functionality
+```typescript
+import { LocalStorageTransport } from 'react-chirp';
 
-### Logger Methods
-
-```tsx
-// Basic logging
-logger.info('Simple message');
-
-// Logging with runtime options
-logger.info('Message with options', {
-  name: 'CustomLogger',
-  level: LogLevel.WARN,
-  transport: [new NetworkTransport({ url: '/api/logs' })],
+const transport = new LocalStorageTransport({
+  key: 'app-logs',
+  maxEntries: 1000,
 });
 ```
 
-### Enhanced Logger Features
+### NetworkTransport
 
-#### Default Additional Data
+Sends logs to a remote endpoint.
 
-```tsx
-const logger = useLogger({
-  userId: '123',
-  sessionId: 'abc',
-  feature: 'payment',
+```typescript
+import { NetworkTransport } from 'react-chirp';
+
+const transport = new NetworkTransport({
+  url: 'https://api.example.com/logs',
+  batchSize: 20,
+  flushInterval: 10000,
 });
-
-logger.info('Action performed');
-// Output: { userId: "123", sessionId: "abc", feature: "payment", msg: "Action performed", ... }
-```
-
-#### Runtime Logger Configuration
-
-```tsx
-logger.error('Critical error', {
-  name: 'ErrorLogger',
-  transport: [
-    new ConsoleTransport(),
-    new NetworkTransport({ url: '/api/errors' }),
-  ],
-});
-```
-
-### Child Loggers
-
-```tsx
-const childLogger = logger.child({ module: 'auth' });
-childLogger.info('Login attempt'); // Will include module: 'auth'
 ```
 
 ## Development
@@ -227,11 +173,11 @@ npm run build
 # Type checking
 npm run typecheck
 
-# Run linting
-npm run lint
-
 # Development mode (watch)
 npm run dev
+
+# Run tests
+npm run test
 ```
 
 ## License
