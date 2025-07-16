@@ -26,7 +26,6 @@ src/
 │   └── logger.ts        # Main Logger class implementation
 ├── react/               # React-specific components and hooks
 │   ├── index.ts         # React exports
-│   ├── context.tsx      # useChirp hook
 │   └── hooks.ts         # Custom logging hooks
 ├── transports/          # Output transports
 │   ├── index.ts         # Transport exports
@@ -65,27 +64,26 @@ function MyComponent({ userId }: { userId: string }) {
   const logger = useLogger();
 
   // With default additional data (automatically included in all logs)
-  const userLogger = useLogger({ 
-    userId, 
+  const userLogger = useLogger({
+    userId,
     component: 'MyComponent',
-    version: '1.0.0'
+    version: '1.0.0',
   });
 
   useEffect(() => {
     // Basic logging
     logger.info('Component mounted');
-    
+
     // Logging with automatic additional data
     userLogger.info('User action performed');
     // Output includes: { userId: "123", component: "MyComponent", version: "1.0.0", msg: "User action performed", ... }
-    
+
     // Logging with custom name and options
     userLogger.info('Critical user action', {
       name: 'UserActionLogger',
       level: LogLevel.WARN,
-      transport: [new NetworkTransport({ url: '/api/critical-logs' })]
+      transport: [new NetworkTransport({ url: '/api/critical-logs' })],
     });
-    
   }, []);
 
   return <div>My Component</div>;
@@ -164,6 +162,7 @@ const logger = useLogger(defaultAdditionalData?: Record<string, any>)
 ```
 
 **Parameters:**
+
 - `defaultAdditionalData` - Object that will be automatically included in all log entries
 
 **Returns:** Enhanced logger with additional functionality
@@ -178,18 +177,19 @@ logger.info('Simple message');
 logger.info('Message with options', {
   name: 'CustomLogger',
   level: LogLevel.WARN,
-  transport: [new NetworkTransport({ url: '/api/logs' })]
+  transport: [new NetworkTransport({ url: '/api/logs' })],
 });
 ```
 
 ### Enhanced Logger Features
 
 #### Default Additional Data
+
 ```tsx
-const logger = useLogger({ 
-  userId: '123', 
+const logger = useLogger({
+  userId: '123',
   sessionId: 'abc',
-  feature: 'payment' 
+  feature: 'payment',
 });
 
 logger.info('Action performed');
@@ -197,13 +197,14 @@ logger.info('Action performed');
 ```
 
 #### Runtime Logger Configuration
+
 ```tsx
 logger.error('Critical error', {
   name: 'ErrorLogger',
   transport: [
     new ConsoleTransport(),
-    new NetworkTransport({ url: '/api/errors' })
-  ]
+    new NetworkTransport({ url: '/api/errors' }),
+  ],
 });
 ```
 
