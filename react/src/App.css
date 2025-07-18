@@ -1,0 +1,128 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+  min-height: 100vh;
+}
+
+.test-section {
+  margin: 30px 0;
+  padding: 20px;
+  background-color: #3a3f47;
+  border-radius: 8px;
+}
+
+.input-group {
+  margin: 15px 0;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.input-group input {
+  width: 300px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 20px 0;
+}
+
+.button-group button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.button-group button:nth-child(1) { background-color: #6c757d; } /* TRACE */
+.button-group button:nth-child(2) { background-color: #007bff; } /* DEBUG */
+.button-group button:nth-child(3) { background-color: #28a745; } /* INFO */
+.button-group button:nth-child(4) { background-color: #ffc107; color: #000; } /* WARN */
+.button-group button:nth-child(5) { background-color: #dc3545; } /* ERROR */
+.button-group button:nth-child(6) { background-color: #6f42c1; } /* FATAL */
+
+.button-group button:hover:not(:disabled) {
+  opacity: 0.8;
+}
+
+.button-group button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.logs-section {
+  margin: 30px 0;
+  padding: 20px;
+  background-color: #3a3f47;
+  border-radius: 8px;
+}
+
+.clear-button {
+  padding: 8px 16px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 15px;
+}
+
+.clear-button:hover {
+  background-color: #c82333;
+}
+
+.logs-container {
+  background-color: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 15px;
+  min-height: 200px;
+  max-height: 400px;
+  overflow-y: auto;
+  text-align: left;
+}
+
+.log-entry {
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  margin: 5px 0;
+  padding: 5px;
+  background-color: #2d2d2d;
+  border-left: 3px solid #007bff;
+  border-radius: 2px;
+}
+
+.instructions {
+  margin: 30px 0;
+  padding: 20px;
+  background-color: #3a3f47;
+  border-radius: 8px;
+}
+
+.instructions ul {
+  text-align: left;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.instructions li {
+  margin: 8px 0;
+}
