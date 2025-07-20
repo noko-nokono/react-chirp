@@ -6,12 +6,12 @@ This is a validation environment for testing the React Log logging library.
 
 1. Install dependencies:
    ```bash
-   npm install
+   pnpm install
    ```
 
 2. Start the development server:
    ```bash
-   npm start
+   pnpm start
    ```
 
 3. Open [http://localhost:1234](http://localhost:1234) to view it in the browser.

@@ -4,17 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Development Commands
 
+**Note: This project uses pnpm as the package manager. Always use pnpm commands.**
+
 ### Build and Development
 ```bash
-npm run build        # Compile TypeScript to dist/
-npm run dev          # Watch mode compilation
-npm run typecheck    # Type checking without emitting files
-npm run lint         # ESLint for TypeScript files
+pnpm run build       # Compile TypeScript to dist/
+pnpm run dev         # Watch mode compilation
+pnpm run typecheck   # Type checking without emitting files
+pnpm run lint        # ESLint for TypeScript files
 ```
 
 ### Testing
 ```bash
-npm run test         # Run Jest tests
+pnpm run test        # Run Jest tests
 ```
 
 ## Architecture Overview

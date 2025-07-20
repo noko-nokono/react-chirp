@@ -13,7 +13,7 @@ A simple, structured logging library for React applications.
 ## Installation
 
 ```bash
-npm install react-log
+pnpm add react-log
 ```
 
 ## Quick Start
@@ -165,19 +165,19 @@ const transport = new NetworkTransport({
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Build the project
-npm run build
+pnpm run build
 
 # Type checking
-npm run typecheck
+pnpm run typecheck
 
 # Development mode (watch)
-npm run dev
+pnpm run dev
 
 # Run tests
-npm run test
+pnpm run test
 ```
 
 ## License
