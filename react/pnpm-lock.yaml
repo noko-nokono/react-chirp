@@ -11,12 +11,12 @@ importers:
       react:
         specifier: ^18.2.0
         version: 18.3.1
-      react-chirp:
-        specifier: file:../..
-        version: file:../..(react@18.3.1)
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
+      react-log:
+        specifier: file:..
+        version: file:..(react@18.3.1)
     devDependencies:
       '@types/react':
         specifier: ^18.0.0
@@ -4384,11 +4384,6 @@ packages:
     resolution: {integrity: sha512-sZ41cxiU5llIB003yxxQBYrARBqe0repqPTTYBTmMqTz9szeBbE37BehCE891NZsmdZqqP+xWKdT3eo3vOzN8w==}
     engines: {node: '>=14'}
 
-  react-chirp@file:../..:
-    resolution: {directory: ../.., type: directory}
-    peerDependencies:
-      react: '>=16.8.0'
-
   react-dev-utils@12.0.1:
     resolution: {integrity: sha512-84Ivxmr17KjUupyqzFode6xKhjwuEJDROWKJy/BthkL7Wn6NJ8h4WE6k/exAv6ImS+0oZLRRW5j/aINMHyeGeQ==}
     engines: {node: '>=14'}
@@ -4415,6 +4410,11 @@ packages:
 
   react-is@18.3.1:
     resolution: {integrity: sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==}
+
+  react-log@file:..:
+    resolution: {directory: .., type: directory}
+    peerDependencies:
+      react: '>=16.8.0'
 
   react-refresh@0.11.0:
     resolution: {integrity: sha512-F27qZr8uUqwhWZboondsPx8tnC3Ct3SxZA3V5WyEvujRyyNv0VYPhoBg1gZ8/MV5tubQp76Trw8lTv9hzRBa+A==}
@@ -10678,10 +10678,6 @@ snapshots:
       regenerator-runtime: 0.13.11
       whatwg-fetch: 3.6.20
 
-  react-chirp@file:../..(react@18.3.1):
-    dependencies:
-      react: 18.3.1
-
   react-dev-utils@12.0.1(eslint@8.57.1)(typescript@5.8.3)(webpack@5.100.2):
     dependencies:
       '@babel/code-frame': 7.27.1
@@ -10729,6 +10725,10 @@ snapshots:
   react-is@17.0.2: {}
 
   react-is@18.3.1: {}
+
+  react-log@file:..(react@18.3.1):
+    dependencies:
+      react: 18.3.1
 
   react-refresh@0.11.0: {}
 

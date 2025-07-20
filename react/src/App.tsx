@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { useChirp } from 'react-chirp';
+import { useLog } from 'react-log';
 import './App.css';
 
 function App() {
-  const { trace, debug, info, warn, error, fatal } = useChirp();
-  const [message, setMessage] = useState('Hello from React Chirp!');
+  const { trace, debug, info, warn, error, fatal } = useLog();
+  const [message, setMessage] = useState('Hello from React Log!');
   const [userData, setUserData] = useState('user123');
 
   const handleLog = (level: 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal') => {
@@ -35,7 +35,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>React Chirp Simple Demo</h1>
+        <h1>React Log Simple Demo</h1>
         
         <div className="test-section">
           <h2>Basic Logging Test</h2>
@@ -97,7 +97,7 @@ function App() {
           
           <h3>What this demonstrates</h3>
           <ul>
-            <li>Basic useChirp hook usage</li>
+            <li>Basic useLog hook usage</li>
             <li>All six log levels</li>
             <li>Logging with additional data (Record&lt;string, string&gt;)</li>
             <li>Simple React integration pattern</li>

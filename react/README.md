@@ -1,6 +1,6 @@
-# React Chirp Validation Environment
+# React Log Validation Environment
 
-This is a validation environment for testing the React Chirp logging library.
+This is a validation environment for testing the React Log logging library.
 
 ## Getting Started
 
@@ -18,7 +18,7 @@ This is a validation environment for testing the React Chirp logging library.
 
 ## What this validates
 
-- useChirp hook functionality
+- useLog hook functionality
 - Different log levels (trace, debug, info, warn, error, fatal)
 - Custom transport configuration
 - Console transport (default)

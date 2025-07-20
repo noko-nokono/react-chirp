@@ -1,5 +1,5 @@
 {
-  "name": "react-chirp",
+  "name": "react-log",
   "version": "0.1.0",
   "description": "A simple, structured logging library for React applications",
   "main": "dist/index.js",

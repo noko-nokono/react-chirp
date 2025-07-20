@@ -21,7 +21,7 @@ npm run test         # Run Jest tests
 
 ### Core Design Patterns
 
-**Factory Pattern**: The main `chirp()` function in `/src/core/logger.ts` acts as a factory, creating ChirpLogger instances with default console transport.
+**Factory Pattern**: The main `log()` function in `/src/core/logger.ts` acts as a factory, creating Logger instances with default console transport.
 
 **Transport Architecture**: Implements a pluggable output system where a single Transport implementation handles log output. Each Transport implements a simple `write(entry: LogEntry)` interface.
 
@@ -29,19 +29,19 @@ npm run test         # Run Jest tests
 - `logger.info("message")` - Simple string logging
 - `logger.info("message", { userId: "123" })` - Message + Record<string, string> data
 
-**React Hook Pattern**: `useChirp()` hook provides the same logging functionality as the core chirp function but optimized for React components with useRef and useCallback.
+**React Hook Pattern**: `useLog()` hook provides the same logging functionality as the core log function but optimized for React components with useRef and useCallback.
 
 ### Key Type Relationships
 
-- `ChirpLogger` class provides the core logging functionality
+- `Logger` class provides the core logging functionality
 - `LogEntry` is the standardized internal log format with level, timestamp, message, and additional string fields
 - `Transport` interface abstracts output destinations
-- `ChirpConfig` configures logger behavior with optional transport setting
+- `LogConfig` configures logger behavior with optional transport setting
 
 ### React Integration Strategy
 
 The `/src/react/` directory provides React-specific abstractions:
-- `useChirp` hook works without any Provider setup, creating a logger instance via useRef
+- `useLog` hook works without any Provider setup, creating a logger instance via useRef
 - Hook methods are optimized with useCallback for performance
 - Configuration is passed directly to the hook rather than through Context providers
 
@@ -49,7 +49,7 @@ The `/src/react/` directory provides React-specific abstractions:
 
 The Logger class uses a single Transport instance:
 - Default transport is ConsoleTransport for console output
-- Custom transports can be configured via the config parameter: `chirp({ transport: customTransport })`
+- Custom transports can be configured via the config parameter: `log({ transport: customTransport })`
 - Transport configuration is separate from the execution logic
 
 ### Level Filtering
@@ -71,7 +71,7 @@ Logger constructor accepts a single Transport instance rather than arrays, simpl
 No printf-style formatting - messages are passed through as-is.
 
 ### React Hook Implementation
-The `useChirp` hook:
+The `useLog` hook:
 - Creates a logger instance via useRef for persistence
 - Wraps each log method with useCallback for performance
 - Accepts optional transport configuration
@@ -87,15 +87,15 @@ React >=16.8.0 is required for hook support in the React integration layer.
 
 ## Core Functions
 
-### chirp(config?)
-- Creates ChirpLogger instance
-- Accepts optional ChirpConfig with transport setting
+### log(config?)
+- Creates Logger instance
+- Accepts optional LogConfig with transport setting
 - Returns logger with trace, debug, info, warn, error, fatal methods
 
-### useChirp(config?)
+### useLog(config?)
 - React hook that provides logging functionality
 - Returns object with optimized logging methods
-- Accepts same configuration as chirp function
+- Accepts same configuration as log function
 
 ### Logger Methods
 All methods follow signature: `methodName(msg: string, data?: Record<string, string>): void`
@@ -106,4 +106,4 @@ All methods follow signature: `methodName(msg: string, data?: Record<string, str
 - First argument must be string message, second argument optional Record<string, string>
 - Default transport is ConsoleTransport
 - Custom transports configured via config object
-- React hook provides same functionality as core chirp function but optimized for React
+- React hook provides same functionality as core log function but optimized for React

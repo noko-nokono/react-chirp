@@ -1,4 +1,4 @@
-# react-chirp
+# react-log
 
 A simple, structured logging library for React applications.
 
@@ -13,7 +13,7 @@ A simple, structured logging library for React applications.
 ## Installation
 
 ```bash
-npm install react-chirp
+npm install react-log
 ```
 
 ## Quick Start
@@ -21,10 +21,10 @@ npm install react-chirp
 ### Basic Usage
 
 ```typescript
-import { chirp } from 'react-chirp';
+import { log } from 'react-log';
 
 // Create a logger instance
-const logger = chirp();
+const logger = log();
 
 // Basic logging with message only
 logger.trace("trace message");
@@ -43,11 +43,11 @@ logger.info("user action", { userId: "123", page: "dashboard" });
 
 ```tsx
 import React, { useEffect } from 'react';
-import { useChirp } from 'react-chirp';
+import { useLog } from 'react-log';
 
 function MyComponent({ userId }: { userId: string }) {
-  // Use the chirp hook
-  const { trace, debug, info, warn, error, fatal } = useChirp();
+  // Use the log hook
+  const { trace, debug, info, warn, error, fatal } = useLog();
 
   useEffect(() => {
     // Log component mount
@@ -68,22 +68,22 @@ function MyComponent({ userId }: { userId: string }) {
 ### Custom Transport Configuration
 
 ```typescript
-import { chirp, NetworkTransport } from 'react-chirp';
+import { log, NetworkTransport } from 'react-log';
 
 // Use custom transport
-const logger = chirp({
+const logger = log({
   transport: new NetworkTransport({ url: '/api/logs' })
 });
 
 // Or in React hook
-const { info } = useChirp({
+const { info } = useLog({
   transport: new NetworkTransport({ url: '/api/logs' })
 });
 ```
 
 ## API Reference
 
-### chirp(config?)
+### log(config?)
 
 Creates a new logger instance.
 
@@ -92,7 +92,7 @@ Creates a new logger instance.
 
 **Returns:** Logger instance with methods: `trace`, `debug`, `info`, `warn`, `error`, `fatal`
 
-### useChirp(config?)
+### useLog(config?)
 
 React hook that provides logging functionality.
 
@@ -129,7 +129,7 @@ methodName(msg: string, data?: Record<string, string>): void
 Outputs logs to the browser console.
 
 ```typescript
-import { ConsoleTransport } from 'react-chirp';
+import { ConsoleTransport } from 'react-log';
 
 const transport = new ConsoleTransport({ asObject: false });
 ```
@@ -139,7 +139,7 @@ const transport = new ConsoleTransport({ asObject: false });
 Stores logs in browser local storage.
 
 ```typescript
-import { LocalStorageTransport } from 'react-chirp';
+import { LocalStorageTransport } from 'react-log';
 
 const transport = new LocalStorageTransport({
   key: 'app-logs',
@@ -152,7 +152,7 @@ const transport = new LocalStorageTransport({
 Sends logs to a remote endpoint.
 
 ```typescript
-import { NetworkTransport } from 'react-chirp';
+import { NetworkTransport } from 'react-log';
 
 const transport = new NetworkTransport({
   url: 'https://api.example.com/logs',

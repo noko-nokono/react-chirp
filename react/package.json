@@ -1,11 +1,11 @@
 {
-  "name": "chirp-react-validation",
+  "name": "log-react-validation",
   "version": "1.0.0",
   "private": true,
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-chirp": "file:../.."
+    "react-log": "file:.."
   },
   "scripts": {
     "start": "PORT=1234 react-scripts start",
