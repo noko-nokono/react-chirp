@@ -1,1 +1,1 @@
-export { chirp } from './logger';
+export { log } from './logger';

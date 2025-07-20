@@ -12,7 +12,7 @@ export class LocalStorageTransport implements Transport {
   private serialize: (entry: LogEntry) => string;
 
   constructor(options: LocalStorageTransportOptions = {}) {
-    this.key = options.key ?? 'chirp-logs';
+    this.key = options.key ?? 'log-logs';
     this.maxEntries = options.maxEntries ?? 1000;
     this.serialize = options.serialize ?? JSON.stringify;
   }

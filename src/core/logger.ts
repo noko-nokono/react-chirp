@@ -1,14 +1,14 @@
 import { LogLevel, LogEntry, Transport } from '../types';
 import { ConsoleTransport } from '../transports';
 
-interface ChirpConfig {
+interface LogConfig {
   transport?: Transport;
 }
 
-class ChirpLogger {
+class Logger {
   private transport: Transport;
 
-  constructor(config: ChirpConfig = {}) {
+  constructor(config: LogConfig = {}) {
     this.transport = config.transport || new ConsoleTransport();
   }
 
@@ -56,6 +56,6 @@ class ChirpLogger {
   }
 }
 
-export function chirp(config?: ChirpConfig): ChirpLogger {
-  return new ChirpLogger(config);
+export function log(config?: LogConfig): Logger {
+  return new Logger(config);
 }

@@ -18,7 +18,7 @@ export interface Transport {
   write(entry: LogEntry): void | Promise<void>;
 }
 
-export interface ChirpOptions {
+export interface LogOptions {
   level?: LogLevel;
   name?: string;
   base?: Record<string, any>;
@@ -35,7 +35,7 @@ export interface ChirpOptions {
   transport?: Transport | Transport[];
 }
 
-export interface ChirpLogger {
+export interface Logger {
   level: LogLevel;
   trace(msg: string, ...objs: Record<string, string>[]): void;
   debug(msg: string, ...objs: Record<string, string>[]): void;
@@ -43,5 +43,5 @@ export interface ChirpLogger {
   warn(msg: string, ...objs: Record<string, string>[]): void;
   error(msg: string, ...objs: Record<string, string>[]): void;
   fatal(msg: string, ...objs: Record<string, string>[]): void;
-  child(bindings: Record<string, any>): ChirpLogger;
+  child(bindings: Record<string, any>): Logger;
 }

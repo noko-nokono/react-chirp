@@ -1,1 +1,1 @@
-export { useChirp } from './hooks';
+export { useLog } from './hooks';

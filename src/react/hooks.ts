@@ -1,13 +1,13 @@
 import { useRef, useCallback } from 'react';
-import { chirp } from '../core/logger';
+import { log } from '../core/logger';
 import { Transport } from '../types';
 
-interface ChirpHookConfig {
+interface LogHookConfig {
   transport?: Transport;
 }
 
-export function useChirp(config?: ChirpHookConfig) {
-  const loggerRef = useRef(chirp(config));
+export function useLog(config?: LogHookConfig) {
+  const loggerRef = useRef(log(config));
 
   const trace = useCallback((msg: string, data?: Record<string, string>) => {
     loggerRef.current.trace(msg, data);
